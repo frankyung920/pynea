@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  pynea-backend:
+    container_name: pynea-backend
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    depends_on:
+      - postgres-db
+    environment:
+      DATABASE_URL: postgresql://frank:12345@localhost:5432/pynea
+
+  postgres-db:
+    image: postgres:13
+    container_name: postgres-container
+    environment:
+      POSTGRES_USER: frank
+      POSTGRES_PASSWORD: 12345
+      POSTGRES_DB: pynea
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+volumes:
+  postgres-data:
